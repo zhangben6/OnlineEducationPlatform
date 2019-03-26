@@ -1,0 +1,9 @@
+Django==1.11
+mysqlclient==1.4.2
+pillow
+django-crispy-forms
+django-formtools
+django-import-export
+httplib2
+future
+six

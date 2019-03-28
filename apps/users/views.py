@@ -1,3 +1,4 @@
+import json
 
 # Create your views here.
 from django.http import HttpResponse
@@ -7,6 +8,7 @@ from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password  # 对明文密码加密
+from django.contrib import messages
 
 from users.models import UserProfile,EmailVerifyRecord
 from .forms import LoginForm,RegisterForm,ForgetForm,ModifyPwdForm
@@ -28,23 +30,44 @@ class LoginView(View):
     def get(self,request):
         return render(request, 'login.html', {})
     def post(self,request):
-        # post请求过来先做前端form表单的验证，然后再查询数据库判断
+        # ret = {'status':200,'msg':'操作成功'}
+        # # post请求过来先做前端form表单的验证，然后再查询数据库判断
+        # login_form = LoginForm(request.POST)
+        # if login_form.is_valid():
+        #     username = request.POST.get('username', '')
+        #     pass_word = request.POST.get('password', '')
+        #     # 然后再根据数据库进行验证,这时候添加自定义判断
+        #     user = authenticate(username=username, password=pass_word)
+        #     if user is not None:
+        #         if user.is_active:
+        #             login(request, user)
+        #             return HttpResponse(json.dumps(ret))
+        #         else:
+        #             return render(request,'login.html',{'msg':'用户未激活'})
+        #     else:
+        #         return render(request, 'login.html', {'msg': '用户名密码不正确'})
+        # else:
+        #     ret['status'] = -1
+        #     ret['msg'] = login_form.errors.as_text()
+        #     return HttpResponse(json.dumps(ret))
+
         login_form = LoginForm(request.POST)
         if login_form.is_valid():
-            username = request.POST.get('username', '')
-            pass_word = request.POST.get('password', '')
-            # 然后再根据数据库进行验证,这时候添加自定义判断
-            user = authenticate(username=username, password=pass_word)
+            # 前端格式验证没有错误的话，取出数据
+            user_name = request.POST.get('username','')
+            pass_word = request.POST.get('password','')
+            # 跟数据库做对比
+            user = authenticate(username=user_name,password=pass_word)
             if user is not None:
                 if user.is_active:
-                    login(request, user)
+                    login(request,user)  # 这步非常关键
                     return redirect('index')
                 else:
-                    return render(request,'login.html',{'msg':'用户未激活'})
+                    return render(request,'login.html',{'msg':'用户未被激活'})
             else:
-                return render(request, 'login.html', {'msg': '用户名密码不正确'})
+                return render(request,'login.html',{'msg':'用户密码不正确'})
         else:
-            return render(request, 'login.html', {'login_form': login_form})
+            return render(request,'login.html',{'login_form':login_form})
 
 class RegisterView(View):
     def get(self,request):
@@ -116,8 +139,6 @@ class ResetView(View):
         else:
             return render(request,'active_fail.html')
 
-
-
 # 与reset路由接受参数不一致，需要重新定义一个视图类
 class ModifyPwdView(View):
     def post(self,request):
@@ -136,7 +157,6 @@ class ModifyPwdView(View):
             # 保证修改密码界面一直拥有这个属性
             email = request.POST.get('email', '')
             return render(request,'password_reset.html',{'modify_form':modify_form,'email':email})
-
 
 # Django中FBV实现用户登陆
 def user_login(request):

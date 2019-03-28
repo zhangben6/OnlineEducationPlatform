@@ -31,6 +31,11 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+# 自定义登录验证 anthenticate
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -134,3 +139,6 @@ USE_TZ = False   # 不采用UTC时间
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,'static'),
+)

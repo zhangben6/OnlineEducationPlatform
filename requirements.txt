@@ -7,3 +7,4 @@ django-import-export
 httplib2
 future
 six
+django-simple-captcha==0.5.5

@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'organization',
     'operation',
     'xadmin',
-    'crispy_forms'
+    'crispy_forms',
+    'captcha'
 ]
 
 # 重载Django自带的user表
@@ -142,3 +143,12 @@ STATIC_URL = '/mystatic/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),
 )
+
+# 发送邮件的用到的参数
+EMAIL_HOST = "smtp.163.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'rapzhang97@163.com'
+EMAIL_HOST_PASSWORD = 'CHURENTOUDI830'  # 启动smtp服务设置的秘钥
+EMAIL_USE_TLS = False
+EMAIL_FROM = "rapzhang97@163.com"
+

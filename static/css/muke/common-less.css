@@ -983,7 +983,7 @@ progress::-webkit-progress-value {
   height: 52px;
   width: 52px;
   .transition(background-position .15s);
-  background: url(/static/img/common/elevator.png?1) no-repeat;
+  background: url(//static/img/common/elevator.png?1) no-repeat;
 }
 .elevator .elevator-diaocha {
   background-position: 0 -798px;
@@ -998,7 +998,7 @@ progress::-webkit-progress-value {
   bottom: -10px; //sub shadow expand
   right: 46px; //sub shadow expand
   .elevator-box-mixin;
-  background: url(/static/img/common/elevator.png) no-repeat 0 -222px;
+  background: url(//static/img/common/elevator.png) no-repeat 0 -222px;
 }
 .elevator .elevator-app {
   background-position: 0 -550px;
@@ -1039,7 +1039,7 @@ progress::-webkit-progress-value {
   bottom: -10px; //sub shadow expand
   right: 46px; //sub shadow expand
   .elevator-box-mixin;
-  background: url(/static/img/common/elevator.png) no-repeat 0 0;
+  background: url(//static/img/common/elevator.png) no-repeat 0 0;
 }
 .elevator .elevator-weixin {
   background-position: 0 -860px;

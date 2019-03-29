@@ -22,12 +22,15 @@ def create_random_str(randomlength=8):
 '''后台发送邮件'''
 def send_register_email(email,send_type='register'):
     email_record = EmailVerifyRecord()
+    # 生成随机的字符串作为code
     code = create_random_str(16)
+
     email_record.code = code
     email_record.email = email
     email_record.send_type = send_type
     email_record.save()
 
+    # 定义发送邮件的格式
     email_title = ""
     email_body = ""
 

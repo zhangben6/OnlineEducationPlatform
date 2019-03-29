@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>找回密码发送邮件</title>
+    <title>账号激活界面</title>
     <style>
         .content{
-            width: 800px;
+            width: 500px;
             height: 500px;
             {#border: 1px solid black;#}
             margin: 300px auto;
@@ -20,7 +20,10 @@
 
 <div class="content">
     <div id="center">
-        <h1> 请您前去邮箱{{ email }}点击链接进行重置密码</h1>
+        <h1> Success message! </h1>
+        <h2>恭喜您成功激活您的账号</h2>
+        <p>您的登陆名称为:<b>{{ email }}</b></p>
+        <p>请牢记您的账号密码~~~~</p>
         <b><a color='red' href="{% url 'login' %}">回登陆页面 >></a></b>
     </div>
 </div>

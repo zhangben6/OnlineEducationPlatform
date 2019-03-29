@@ -76,7 +76,6 @@ class RegisterView(View):
     def post(self,request):
         register_form = RegisterForm(request.POST)
         if register_form.is_valid():
-
             # 取出request中的值，保存到数据库
             user_name = request.POST.get('email','')
             if UserProfile.objects.filter(email=user_name):
@@ -101,13 +100,17 @@ class ActiveUserView(View):
         # 用户is_active属性激活
         record = EmailVerifyRecord.objects.filter(code=active_code).first()
         if record:
+            # 根据record查出用户的email，在userprofile中修改对应的is_active的True状态
             email = record.email
             user = UserProfile.objects.filter(email=email).first()
             user.is_active = True
             user.save()
         else:
+            # 目前链接失效的情况，数据库中查不到对应的code
             return render(request,'active_fail.html')
-        return render(request,'login.html')
+
+        # 操作成功后不直接返回login页面，为提升用户交互效果，应添加用户交互页面
+        return render(request,'active_success.html',{'email':email})
 
 class ForgetPwdView(View):
     def get(self,request):
@@ -115,18 +118,17 @@ class ForgetPwdView(View):
         return render(request,'forgetpwd.html',{'forget_form':forget_form})
 
     def post(self,request):
-        # 初始化一个表单form对象，进行前端数据的格式验证
         forget_form = ForgetForm(request.POST)
         if forget_form.is_valid():
+            # 取出对应的值
             email = request.POST.get('email','')
-            # 在数据库中查询对应信息
-            user = UserProfile.objects.filter(email = email)
+            user = UserProfile.objects.filter(email=email).first()
             if user:
-                # 发送密码重置的邮件
+                # 给用户输入的邮箱发送邮件
                 send_register_email(email,'forget')
                 return render(request,'send_email_success.html')
             else:
-                return render(request,'forgetpwd.html',{'msg':'没有对应用户','forget_form':forget_form})
+                return render(request,'forgetpwd.html',{'forget_form':forget_form,'msg':'没有对应的用户'})
         else:
             return render(request,'forgetpwd.html',{'forget_form':forget_form})
 

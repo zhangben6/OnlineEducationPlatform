@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'operation',
     'xadmin',
     'crispy_forms',
-    'captcha'
+    'captcha',
+    'pure_pagination',
 ]
 
 # 重载Django自带的user表
@@ -81,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media' # 添加此项用于将media添加到全局变量，模板中使用{{MEDIA_URL}}
             ],
         },
     },
@@ -152,3 +154,7 @@ EMAIL_HOST_PASSWORD = 'CHURENTOUDI830'  # 启动smtp服务设置的秘钥
 EMAIL_USE_TLS = False
 EMAIL_FROM = "rapzhang97@163.com"
 
+
+# 上传资源文件的配置
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')

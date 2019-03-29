@@ -13,7 +13,7 @@ class Course(models.Model):
     learn_times = models.IntegerField(default=0,verbose_name=u'学习时长(分钟数)')
     students = models.IntegerField(default=0,verbose_name=u'学习人数')
     fav_nums = models.IntegerField(default=0,verbose_name=u'收藏人数')
-    image = models.ImageField(upload_to="media/courses/%Y/%m",verbose_name=u'封面图',max_length=100)
+    image = models.ImageField(upload_to="courses/%Y/%m",verbose_name=u'封面图',max_length=100)
     click_nums = models.IntegerField(default=0,verbose_name=u'点击数')
     add_time = models.DateTimeField(default=datetime.now,verbose_name='添加时间')
 
@@ -55,7 +55,7 @@ class Video(models.Model):
 class CourseResource(models.Model):
     course = models.ForeignKey(Course,verbose_name=u'课程')
     name = models.CharField(max_length=100, verbose_name=u'资源名称')
-    download = models.FileField(upload_to="media/course/resource/%Y/%m",verbose_name=u"资源文件",max_length=100)
+    download = models.FileField(upload_to="course/resource/%Y/%m",verbose_name=u"资源文件",max_length=100)
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加时间')
 
     class Meta:

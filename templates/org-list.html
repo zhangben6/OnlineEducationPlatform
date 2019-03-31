@@ -3,6 +3,33 @@
 
 {% block title %}Rapzhang在线教育平台{% endblock %}
 
+{% block custom_js %}
+    <script>
+    $(function(){
+        $('#jsStayBtn').on('click', function(){
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url:"/org/add_ask/",
+                data:$('#jsStayForm').serialize(),
+                async: true,
+                success: function(res) {
+                    if(res.status == 'success'){
+                        $("#jsCompanyTips").empty();
+                        $('#jsStayForm')[0].reset();
+
+                        alert("提交成功")
+                    }else if(res.status == 'fail'){
+                        console.log(res.msg);
+                        $('#jsCompanyTips').html(res.msg)
+                    }
+                },
+            });
+        });
+    })
+</script>
+
+{% endblock %}
 
 {% block custom_bread %}
     <section>
@@ -139,6 +166,7 @@
                 </div>
                 <p class="error company-tips" id="jsCompanyTips"></p>
 				<input class="btn" type="text" id="jsStayBtn" value="立即咨询 >" />
+                {% csrf_token %}
             </form>
 		</div>
 

@@ -28,6 +28,8 @@ class CourseOrg(models.Model):
     address = models.CharField(max_length=150,verbose_name=u'机构地址')
     # 涉及到城市搜索机构,会涉及到一对多的关系查询,引入外键
     city = models.ForeignKey(CityDict,verbose_name='所在城市')
+    students = models.IntegerField(default=0,verbose_name=u'学习人数')
+    course_nums = models.IntegerField(default=0,verbose_name=u'课程数')
     add_time = models.DateTimeField(default=datetime.now)
 
     class Meta:

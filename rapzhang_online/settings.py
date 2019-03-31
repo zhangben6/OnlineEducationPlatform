@@ -141,10 +141,16 @@ USE_TZ = False   # 不采用UTC时间
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+# 静态文件的配置
 STATIC_URL = '/mystatic/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'static'),
 )
+
+
+# 上传资源文件的配置
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # 发送邮件的用到的参数
 EMAIL_HOST = "smtp.163.com"
@@ -153,8 +159,3 @@ EMAIL_HOST_USER = 'rapzhang97@163.com'
 EMAIL_HOST_PASSWORD = 'CHURENTOUDI830'  # 启动smtp服务设置的秘钥
 EMAIL_USE_TLS = False
 EMAIL_FROM = "rapzhang97@163.com"
-
-
-# 上传资源文件的配置
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')

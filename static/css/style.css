@@ -3404,7 +3404,7 @@ footer .footer .line {
     vertical-align: top;
     font-size: 14px;
     color: #ff7800;
-    background: url(../images/authentication.png) no-repeat left center;
+    background: url("../images/authentication.png") no-repeat left center;
     padding-left: 30px;
     margin-left: 20px;
 }

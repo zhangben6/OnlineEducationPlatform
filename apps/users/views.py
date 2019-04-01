@@ -2,7 +2,7 @@ import json
 
 # Create your views here.
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,reverse
 from django.contrib.auth import authenticate,login
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
@@ -61,7 +61,7 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:
                     login(request,user)  # 这步非常关键
-                    return redirect('index')
+                    return redirect(reverse('index'))
                 else:
                     return render(request,'login.html',{'msg':'用户未被激活'})
             else:

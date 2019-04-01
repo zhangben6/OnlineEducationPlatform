@@ -3,11 +3,13 @@ import json
 from django.shortcuts import render
 from django.views.generic import View
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 # Create your views here.
 
 from .models import CourseOrg,CityDict
 from .forms import UserAskForm
+from courses.models import Course
+
 
 class OrgView(View):
     '''
@@ -75,5 +77,82 @@ class AddUserAskView(View):
             return HttpResponse(json.dumps({'status':'success'}),content_type='application/json')
         else:
             msg = {'status':'fail','msg':'add false'}
-            return HttpResponse(json.dumps({'status':'fail','msg':'添加出错'}),content_type='application/json')
+            # return HttpResponse(json.dumps({'status':'fail','msg':'添加出错'},ensure_ascii=False),content_type='application/json,charset=utf-8')
+            return JsonResponse({'status':'fail','msg':'添加出错1'})
 
+
+class OrgHomeView(View):
+    '''
+    机构首页
+    '''
+    def get(self,request,org_id):
+        # 取出对应的课程机构
+        course_org = CourseOrg.objects.get(id=int(org_id))
+
+        # 根据外键取出所有的课程
+        all_courses = course_org.course_set.all()[:4]
+        all_teachers = course_org.teacher_set.all()[:2]
+
+        # 这个值用于org_base.html页面的选中做铺垫
+        current_page = 'home'
+        return render(request,'org-detail-homepage.html',{
+            'all_teachers':all_teachers,
+            'all_courses':all_courses,
+            'course_org':course_org,
+            'current_page':current_page
+        })
+
+class OrgCourseView(View):
+    '''
+    机构课程列表页面
+    '''
+    def get(self,request,org_id):
+        # 取出对应的课程机构
+        course_org = CourseOrg.objects.get(id=int(org_id))
+
+        # 根据外键取出所有的课程
+        all_courses = course_org.course_set.all()
+
+        # 这个值用于org_base.html页面的选中做铺垫
+        current_page = 'course'
+        return render(request,'org-detail-course.html',{
+            'all_courses':all_courses,
+            'course_org':course_org,
+            'current_page': current_page
+        })
+
+
+class OrgDescView(View):
+    '''
+    机构课程列表页面
+    '''
+    def get(self,request,org_id):
+        # 取出对应的课程机构
+        course_org = CourseOrg.objects.get(id=int(org_id))
+
+        # 这个值用于org_base.html页面的选中做铺垫
+        current_page = 'desc'
+        return render(request,'org-detail-desc.html',{
+            'course_org':course_org,
+            'current_page': current_page
+        })
+
+
+class OrgTeacherView(View):
+    '''
+    机构教师
+    '''
+    def get(self,request,org_id):
+        # 取出对应的课程机构
+        course_org = CourseOrg.objects.get(id=int(org_id))
+
+        # 根据外键取出所有教师
+        all_teachers = course_org.teacher_set.all()
+
+        # 这个值用于org_base.html页面的选中做铺垫
+        current_page = 'teacher'
+        return render(request,'org-detail-teachers.html',{
+            'course_org':course_org,
+            'all_teachers':all_teachers,
+            'current_page': current_page
+        })

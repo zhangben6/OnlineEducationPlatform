@@ -3,7 +3,7 @@ __author__ = 'rapzhang'
 __data__ = '2019/3/31 12:18'
 
 from django.conf.urls import url,include
-from .views import OrgView,AddUserAskView,OrgHomeView,OrgCourseView,OrgDescView,OrgTeacherView
+from .views import OrgView,AddUserAskView,OrgHomeView,OrgCourseView,OrgDescView,OrgTeacherView,AddFavView
 
 
 urlpatterns = [
@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^teacher/(?P<org_id>\d+)$', OrgTeacherView.as_view(), name='org_teacher'),
 
     # 机构收藏
+    url(r'^add_fav/$',AddFavView.as_view(),name='add_fav')
 
 ]

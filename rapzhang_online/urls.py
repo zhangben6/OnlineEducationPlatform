@@ -41,4 +41,7 @@ urlpatterns = [
     # 课程机构url配置 (url分发)
     url('^org/', include('organization.urls',namespace='org')), # Include添加命名空间属性，避免class重名
 
+    # 公开课页面
+    url('^course/', include('courses.urls', namespace='course')),  # Include添加命名空间属性，避免class重名
+
 ]

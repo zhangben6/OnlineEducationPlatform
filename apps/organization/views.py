@@ -94,13 +94,20 @@ class OrgHomeView(View):
         all_courses = course_org.course_set.all()[:4]
         all_teachers = course_org.teacher_set.all()[:2]
 
+        # 收藏功能判断用户是否登陆
+        has_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user,fav_id=course_org.id,fav_type=2):
+                has_fav = True
+
         # 这个值用于org_base.html页面的选中做铺垫
         current_page = 'home'
         return render(request,'org-detail-homepage.html',{
             'all_teachers':all_teachers,
             'all_courses':all_courses,
             'course_org':course_org,
-            'current_page':current_page
+            'current_page':current_page,
+            'has_fav':has_fav,
         })
 
 class OrgCourseView(View):
@@ -114,12 +121,19 @@ class OrgCourseView(View):
         # 根据外键取出所有的课程
         all_courses = course_org.course_set.all()
 
+        # 收藏功能判断用户是否登陆
+        has_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+
         # 这个值用于org_base.html页面的选中做铺垫
         current_page = 'course'
         return render(request,'org-detail-course.html',{
             'all_courses':all_courses,
             'course_org':course_org,
-            'current_page': current_page
+            'current_page': current_page,
+            'has_fav':has_fav,
         })
 
 
@@ -131,11 +145,18 @@ class OrgDescView(View):
         # 取出对应的课程机构
         course_org = CourseOrg.objects.get(id=int(org_id))
 
+        # 收藏功能判断用户是否登陆
+        has_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+
         # 这个值用于org_base.html页面的选中做铺垫
         current_page = 'desc'
         return render(request,'org-detail-desc.html',{
             'course_org':course_org,
-            'current_page': current_page
+            'current_page': current_page,
+            'has_fav':has_fav,
         })
 
 
@@ -150,17 +171,24 @@ class OrgTeacherView(View):
         # 根据外键取出所有教师
         all_teachers = course_org.teacher_set.all()
 
+        # 收藏功能判断用户是否登陆
+        has_fav = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+
         # 这个值用于org_base.html页面的选中做铺垫
         current_page = 'teacher'
         return render(request,'org-detail-teachers.html',{
             'course_org':course_org,
             'all_teachers':all_teachers,
-            'current_page': current_page
+            'current_page': current_page,
+            'has_fav':has_fav
         })
 
 class AddFavView(View):
     '''
-    用户收藏,用户取消收藏
+    用户收藏,用户取消收藏. 前端AJAX提交post请求
     '''
     def post(self,request):
         fav_id = request.POST.get('fav_id',0)
@@ -175,7 +203,7 @@ class AddFavView(View):
         if exist_record:
             # 如果记录已经存在，则表示用户取消收藏
             UserFavorite.objects.filter(user=request.user,fav_id=int(fav_id),fav_type=int(fav_type)).delete()
-            return HttpResponse(json.dumps({'status': 'fail', 'msg': '取消收藏成功'}), content_type='application/json')
+            return HttpResponse(json.dumps({'status': 'fail', 'msg': '取消收藏'}), content_type='application/json')
 
         else:
             user_fav = UserFavorite()

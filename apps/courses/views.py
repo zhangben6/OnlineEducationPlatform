@@ -11,7 +11,7 @@ class CourseListView(View):
         all_courses = Course.objects.all().order_by('-add_time')
 
         # 右边导航栏热门课程推荐
-        hot_courses = all_courses.order_by('-click_nums')[:3]
+        hot_courses = all_courses.order_by('-num_click')[:3]
 
         # 按照学习人数和热门课程--- 排序
         sort = request.GET.get('sort', '')
@@ -42,7 +42,9 @@ class CourseDetailView(View):
     def get(self,request,course_id):
         course = Course.objects.get(id=int(course_id))
 
-
+        # 每次的点击数 +1
+        course.num_click += 1
+        course.save()
         return render(request,'course-detail.html',{
             'course':course
         })

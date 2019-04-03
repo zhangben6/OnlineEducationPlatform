@@ -28,7 +28,7 @@ SECRET_KEY = 'junz%0$divzhpz9*jp_v)jseyj+&2dyt$5g+e)dz&qep7t^y8&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # 自定义登录验证 anthenticate

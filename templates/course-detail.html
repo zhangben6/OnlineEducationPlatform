@@ -35,17 +35,17 @@
 						<h1 title="django 从入门到精通体验开始了">{{ course.name }}</h1>
 						<span class="key">{{ course.desc }}</span>
 						<div class="prize">
-							<span class="fl">难度：<i class="key">{{ course.get_degree_dispaly }}</i></span>
+							<span class="fl">难度：<i class="key">{{ course.get_degree_display }}</i></span>
 							<span class="fr">学习人数：{{ course.students }}</span>
 						</div>
 						<ul class="parameter">
 							<li><span class="pram word3">时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;长：</span><span>{{ course.learn_times }}分钟</span></li>
-                            <li><span class="pram word3">章&nbsp;节&nbsp;数：</span><span>5</span></li>
-                            <li><span class="pram word3">课程类别：</span><span title="">web开发/后端开发</span></li>
+                            <li><span class="pram word3">章&nbsp;节&nbsp;数：</span><span>{{ course.get_zj_nums }}</span></li>
+                            <li><span class="pram word3">课程类别：</span><span title="">{{ course.category }}</span></li>
 							<li class="piclist"><span class="pram word4">学习用户：</span>
-
-                                    <span class="pic"><img width="40" height="40" src="{% static 'media/image/2016/12/default_big_14.png' %}"/></span>
-
+                                {% for user_course in course.get_learn_user %}
+                                    <span class="pic"><img width="40" height="40" src="{{ MEDIA_URL }}{{ user_course.user.image}}"/></span>
+                                {% endfor %}
 							</li>
 						</ul>
 						<div class="btns">
@@ -78,11 +78,11 @@
 					</div>
 					<div class="pic">
                         <a href="/company/14/">
-                            <img width="150" height="80" src="{% static 'media/org/2016/11/bjdx.jpg' %}"/>
+                            <img width="150" height="80" src="{{ MEDIA_URL }}{{ course.course_org.image }}"/>
                         </a>
                     </div>
 					<a href="/company/14/">
-                        <h2 class="center" title="清华大学">北京大学</h2>
+                        <h2 class="center" title="清华大学">{{ course.course_org.name }}</h2>
                     </a>
 					<div class="btn  notlogin
 					     "data-favid="14" id="jsRightBtn">
@@ -91,12 +91,12 @@
 					<div class="clear">
 						<ul>
                             <li>
-                                <span>课 &nbsp;程&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   5</span>
+                                <span>课 &nbsp;程&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {{ course.course_org.get_course_nums }}</span>
                             </li>
                             <li>
-                                <span>教 &nbsp;师&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  0</span>
+                                <span>教 &nbsp;师&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {{ course.course_org.get_teachers_nums }}</span>
                             </li>
-							<li>所在地区：&nbsp;&nbsp;北京市</li>
+							<li>所在地区：&nbsp;&nbsp;{{ course.course_org.address }}</li>
 							<li>认&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;证&nbsp;:
                                 &nbsp;&nbsp;
 								    <img title="金牌机构", src="{% static 'images/gold.png' %}"/>
@@ -108,9 +108,12 @@
 		</div>
 	</div>
 </section>
+
     <section>
 	<div class="wp">
 		<div class="list groupPurchase_detail_pro">
+
+
 			<div class="left layout">
 				<div class="head">
 					<ul class="tab_header">
@@ -119,7 +122,7 @@
 				</div>
 				<div class="tab_cont tab_cont1">
 
-					<p>&nbsp; &nbsp;  课程介绍</p>
+					<p>&nbsp; &nbsp;  {{ course.desc }}</p>
 
 				</div>
 				<div class="tab_cont tab_cont2" >
@@ -130,6 +133,8 @@
 					</div>
 				</div>
 			</div>
+
+
 			<div class="right layout">
 				<div class="head">相关课程推荐</div>
                 <div class="group_recommend">

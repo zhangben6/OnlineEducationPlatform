@@ -22,7 +22,7 @@ class UserProfile(AbstractUser):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.nick_name
+        return self.username
 
 # 邮箱验证码实体类
 class EmailVerifyRecord(models.Model):

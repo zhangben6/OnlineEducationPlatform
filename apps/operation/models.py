@@ -45,6 +45,7 @@ class UserFavorite(models.Model):
         verbose_name_plural = verbose_name
 
 
+
 # 用户消息
 class UserMessage(models.Model):
     # 发送消息操作,代表的接收用户
@@ -59,7 +60,7 @@ class UserMessage(models.Model):
         verbose_name_plural = verbose_name
 
 
-# 用户收藏的课程信息
+# 用户收藏学习的课程信息
 class UserCourse(models.Model):
     user = models.ForeignKey(UserProfile, verbose_name=u'用户')
     course = models.ForeignKey(Course, verbose_name=u'课程')

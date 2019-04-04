@@ -3,7 +3,7 @@ __author__ = 'rapzhang'
 __data__ = '2019/4/2 10:50'
 
 from django.conf.urls import url
-from .views import CourseListView,CourseDetailView,CourseInfoView
+from .views import CourseListView,CourseDetailView,CourseInfoView,CommentsView,AddCommentView
 
 urlpatterns = [
     #课程列表页
@@ -14,5 +14,11 @@ urlpatterns = [
 
     # 课程学习页面
     url(r'^info/course_id=(?P<course_id>\d+)$', CourseInfoView.as_view(), name='course_info'),
+
+    # 课程评论页面
+    url(r'^comment/course_id=(?P<course_id>\d+)$', CommentsView.as_view(), name='course_comment'),
+
+    # 前端ajax访问的接口 - 添加用户评论
+    url(r'^add_comment/$', AddCommentView.as_view(), name='add_comment'),
 
 ]

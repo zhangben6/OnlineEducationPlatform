@@ -1,9 +1,11 @@
+import json
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import View
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Course,CourseResource
-from operation.models import UserFavorite
+from operation.models import UserFavorite,CourseComments
 # Create your views here.
 
 
@@ -70,6 +72,7 @@ class CourseDetailView(View):
             'has_fav_org':'has_fav_org'
         })
 
+
 class CourseInfoView(View):
     '''
     课程章节信息（学习页面)
@@ -81,6 +84,39 @@ class CourseInfoView(View):
             'course':course,
             'course_resources':all_resource
         })
+
+
+class CommentsView(View):
+    def get(self, request, course_id):
+        course = Course.objects.get(id=int(course_id))
+        all_comments = CourseComments.objects.all()
+        all_recourse = CourseResource.objects.filter(course=course)
+        return render(request, 'course-comment.html', {
+            'course': course,
+            'all_comments':all_comments,
+            'all_recourse':all_recourse
+        })
+
+class AddCommentView(View):
+    '''
+    用户添加课程评论的API
+    '''
+    def post(self,request):
+        if not request.user.is_authenticated():
+            return HttpResponse(json.dumps({'status':'fail','msg':'用户未登录'}),content_type='application/json')
+
+        course_id = request.POST.get('course_id',0)
+        comments = request.POST.get('comments','')
+        if int(course_id) > 0 and comments:
+            course = Course.objects.get(id=int(course_id))
+            course_comments = CourseComments()
+            course_comments.course = course
+            course_comments.comments = comments
+            course_comments.user = request.user
+            course_comments.save()
+            return HttpResponse(json.dumps({'status':'success','msg':'添加评论成功'}),content_type='application/json')
+        else:
+            return HttpResponse(json.dumps({'status':'fail','msg':'添加评论失败'}),content_type='application/json')
 
 
 

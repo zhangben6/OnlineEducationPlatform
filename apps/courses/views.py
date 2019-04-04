@@ -3,6 +3,7 @@ from django.views.generic.base import View
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Course
+from operation.models import UserFavorite
 # Create your views here.
 
 
@@ -42,11 +43,31 @@ class CourseDetailView(View):
     def get(self,request,course_id):
         course = Course.objects.get(id=int(course_id))
 
+        # 取出相关的tag标签，做相关推荐课程
+        tag = course.tag
+        if tag:
+            relate_courses = Course.objects.filter(tag=tag)[:1]
+        else:
+            relate_courses = []   # 为了让模板中的for循环不报错
         # 每次的点击数 +1
         course.num_click += 1
         course.save()
+
+        # 判断收藏功能的逻辑
+        has_fav_course = False
+        has_fav_org = False
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=course.id, fav_type=1):
+                has_fav_course = True
+            if UserFavorite.objects.filter(user=request.user, fav_id=course.course_org.id, fav_type=2):
+                has_fav_org = True
+
+
         return render(request,'course-detail.html',{
-            'course':course
+            'course':course,
+            'relate_courses':relate_courses,
+            'has_fav_course':has_fav_course,
+            'has_fav_org':'has_fav_org'
         })
 
 

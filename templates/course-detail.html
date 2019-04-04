@@ -50,7 +50,7 @@
 						</ul>
 						<div class="btns">
 							<div class="btn colectgroupbtn"  id="jsLeftBtn">
-                                  收藏
+                                  {% if has_fav_course %}已收藏{% else %}收藏{% endif %}
                             </div>
                                 <div class="buy btn"><a style="color: white" href="course-video.html">开始学习</a></div>
 						</div>
@@ -86,7 +86,7 @@
                     </a>
 					<div class="btn  notlogin
 					     "data-favid="14" id="jsRightBtn">
-                         已收藏
+                         {% if has_fav_org %}已收藏{% else %}收藏{% endif %}
                     </div>
 					<div class="clear">
 						<ul>
@@ -138,26 +138,65 @@
 			<div class="right layout">
 				<div class="head">相关课程推荐</div>
                 <div class="group_recommend">
-
+                    {% for relate_course in relate_courses %}
                         <dl>
                             <dt>
                                 <a target="_blank" href="">
-                                    <img width="240" height="220" class="scrollLoading" src="{% static 'media/courses/2016/11/540e57300001d6d906000338-240-135_mvvGYHL.jpg' %}"/>
+                                    <img width="240" height="220" class="scrollLoading" src="{{ MEDIA_URL }}{{ relate_course.image }}"/>
                                 </a>
                             </dt>
                             <dd>
-                                <a target="_blank" href=""><h2> django实战项目</h2></a>
-                                <span class="fl">学习时长：<i class="key">0</i></span>
+                                <a target="_blank" href=""><h2>{{ relate_course.name }}</h2></a>
+                                <span class="fl">学习时长：<i class="key">{{ relate_course.learn_times }}分钟</i></span>
                             </dd>
                         </dl>
-
-
-
+                    {% endfor %}
                 </div>
 			</div>
 		</div>
 	</div>
 </section>
+{% endblock %}
+
+{% block custom_js %}
+    <script>
+    //收藏分享
+function add_fav(current_elem, fav_id, fav_type){
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"/org/add_fav/",
+        data:{'fav_id':fav_id, 'fav_type':fav_type},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    window.location.href="/login/";
+                }else{
+                   // alert(data.msg)
+                    current_elem.text('收藏')
+
+                }
+
+            }else if(data.status == 'success'){
+                current_elem.text(data.msg)
+            }
+        },
+    });
+}
+
+$('#jsLeftBtn').on('click',function () {
+    add_fav($(this),{{ course.id }},1);
+});
+
+$('#jsRightBtn').on('click',function () {
+    add_fav($(this),{{ course.course_org.id }},2);
+});
+
+    </script>
 {% endblock %}
 
 

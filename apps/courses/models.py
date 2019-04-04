@@ -2,7 +2,8 @@ from datetime import datetime
 
 # Create your models here.
 from django.db import models
-from organization.models import CourseOrg
+from organization.models import CourseOrg,Teacher
+
 
 # 课程详情页实体类
 class Course(models.Model):
@@ -18,6 +19,9 @@ class Course(models.Model):
     tag = models.CharField(default='',verbose_name=u'课程标签',max_length=10)
     category = models.CharField(max_length=20,default=u'后端开发',verbose_name=u'课程类别')
     num_click = models.IntegerField(default=0,verbose_name='点击数')
+    teacher = models.ForeignKey(Teacher,verbose_name=u'授课老师',null=True,blank=True)
+    need_know = models.CharField(max_length=100,default='',verbose_name=u'课程须知')
+    teacher_all = models.CharField(max_length=100,default='',verbose_name=u'老师告诉你')
     add_time = models.DateTimeField(default=datetime.now,verbose_name='添加时间')
 
     class Meta:
@@ -31,6 +35,9 @@ class Course(models.Model):
     def get_learn_user(self):
         return self.usercourse_set.all()[:5]
 
+    def get_course_lesson(self):
+        # 获取所有章节信息
+        return self.lesson_set.all()
 
     def __str__(self):
         return self.name
@@ -51,10 +58,17 @@ class Lesson(models.Model):
         return self.name
 
 
+    #  通过外键获取章节的所有视频
+    def get_lesson_video(self):
+        return self.video_set.all()
+
+
 # 视频播放地址实体类
 class Video(models.Model):
     lesson = models.ForeignKey(Lesson,verbose_name=u'章节')
+    url = models.CharField(max_length=200,default='',verbose_name=u'访问地址')
     name = models.CharField(max_length=100,verbose_name=u'视频名称')
+    learn_times = models.IntegerField(default=0, verbose_name=u'学习时长(分钟数)')
     add_time = models.DateTimeField(default=datetime.now,verbose_name='添加时间')
 
     class Meta:

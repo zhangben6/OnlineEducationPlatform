@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic.base import View
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Course
+from .models import Course,CourseResource
 from operation.models import UserFavorite
 # Create your views here.
 
@@ -68,6 +68,18 @@ class CourseDetailView(View):
             'relate_courses':relate_courses,
             'has_fav_course':has_fav_course,
             'has_fav_org':'has_fav_org'
+        })
+
+class CourseInfoView(View):
+    '''
+    课程章节信息（学习页面)
+    '''
+    def get(self,request,course_id):
+        course = Course.objects.get(id=int(course_id))
+        all_resource = CourseResource.objects.filter(course=course)
+        return render(request,'course-video.html',{
+            'course':course,
+            'course_resources':all_resource
         })
 
 

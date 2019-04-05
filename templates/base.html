@@ -89,7 +89,7 @@
 							</li>
 
 							<li class="{% ifequal current 'teacher' %}active{% endifequal %}">
-								<a href="teachers-list.html">授课教师</a>
+								<a href="{% url 'org:teacher' %}">授课教师</a>
 							</li>
 
 							<li class="{% ifequal current 'org' %}active{% endifequal %}">

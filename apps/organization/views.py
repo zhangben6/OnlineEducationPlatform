@@ -6,7 +6,7 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse,JsonResponse
 # Create your views here.
 
-from .models import CourseOrg,CityDict
+from .models import CourseOrg,CityDict,Teacher
 from .forms import UserAskForm
 from courses.models import Course
 from operation.models import UserFavorite
@@ -204,7 +204,7 @@ class AddFavView(View):
         if exist_record:
             # 如果记录已经存在，则表示用户取消收藏
             UserFavorite.objects.filter(user=request.user,fav_id=int(fav_id),fav_type=int(fav_type)).delete()
-            return HttpResponse(json.dumps({'status': 'fail', 'msg': '取消收藏'}), content_type='application/json')
+            return HttpResponse(json.dumps({'status': 'success', 'msg': '收藏'}), content_type='application/json')
 
         else:
             user_fav = UserFavorite()
@@ -218,3 +218,67 @@ class AddFavView(View):
             else:
                 return HttpResponse(json.dumps({'status': 'fail', 'msg': '收藏出错'}), content_type='application/json')
 
+
+
+class TeacherView(View):
+    def get(self,request):
+        all_teachers = Teacher.objects.all()
+
+        # 根据人气对讲师进行排序
+        sort = request.GET.get('sort','')
+        if sort:
+            if sort == 'hot':
+                all_teachers = all_teachers.order_by("-click_num")
+
+
+         # 页面右边的讲师排行榜
+        sorted_teachers = Teacher.objects.all().order_by('-click_num')[:3]
+
+
+
+        # 对机构教师进行分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        # 为Paginator提供完整查询字符串生成的请求对象
+        p = Paginator(all_teachers, 3, request=request)
+        teachers = p.page(page)
+
+        # QuerySet类型可以直接用count()统计数量
+        teacher_nums = all_teachers.count()
+        return render(request,'teachers-list.html',{
+            'all_teachers':teachers,
+            'current':'teacher',
+            'sort':sort,
+            'sorted_teachers':sorted_teachers
+        })
+
+
+class TeacherDetailView(View):
+    def get(self,request,teacher_id):
+
+        teacher = Teacher.objects.filter(id=int(teacher_id)).first()
+
+        all_course = Course.objects.filter(teacher=teacher)
+
+        had_fav_teacher = False
+        has_fav_org = False
+
+        if UserFavorite.objects.filter(user=request.user,fav_id=teacher_id,fav_type=3):
+            had_fav_teacher = True
+        if UserFavorite.objects.filter(user=request.user,fav_id=teacher.org.id,fav_type=2):
+            has_fav_org = True
+
+        # 页面右边的讲师排行榜
+        sorted_teachers = Teacher.objects.all().order_by('-click_num')[:3]
+
+        return render(request,'teacher-detail.html',{
+            'teacher':teacher,
+            'all_course':all_course,
+            'sorted_teachers': sorted_teachers,
+            'had_fav_teacher':had_fav_teacher,
+            'had_fav_org':has_fav_org,
+            'current':'teacher'
+        })

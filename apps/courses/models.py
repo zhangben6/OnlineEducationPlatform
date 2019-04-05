@@ -20,8 +20,8 @@ class Course(models.Model):
     category = models.CharField(max_length=20,default=u'后端开发',verbose_name=u'课程类别')
     num_click = models.IntegerField(default=0,verbose_name='点击数')
     teacher = models.ForeignKey(Teacher,verbose_name=u'授课老师',null=True,blank=True)
-    need_know = models.CharField(max_length=100,default='',verbose_name=u'课程须知')
-    teacher_all = models.CharField(max_length=100,default='',verbose_name=u'老师告诉你')
+    need_know = models.CharField(max_length=100,default='',null=True,blank=True,verbose_name=u'课程须知')
+    teacher_all = models.CharField(max_length=100,default='',null=True,blank=True,verbose_name=u'老师告诉你')
     add_time = models.DateTimeField(default=datetime.now,verbose_name='添加时间')
 
     class Meta:

@@ -3,7 +3,7 @@ __author__ = 'rapzhang'
 __data__ = '2019/4/2 10:50'
 
 from django.conf.urls import url
-from .views import CourseListView,CourseDetailView,CourseInfoView,CommentsView,AddCommentView
+from .views import CourseListView,CourseDetailView,CourseInfoView,CommentsView,AddCommentView,VideoPlayView
 
 urlpatterns = [
     #课程列表页
@@ -20,5 +20,8 @@ urlpatterns = [
 
     # 前端ajax访问的接口 - 添加用户评论
     url(r'^add_comment/$', AddCommentView.as_view(), name='add_comment'),
+
+    # 视频的url匹配路径
+    url(r'^video/video_id=(?P<video_id>\d+)$', VideoPlayView.as_view(), name='video_play'),
 
 ]

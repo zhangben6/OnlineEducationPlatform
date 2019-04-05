@@ -19,14 +19,15 @@ from django.views.generic import TemplateView  # 此方法处理静态文件
 import xadmin
 from django.views.static import serve  # 处理静态文件（media)
 
-from users.views import LoginView,RegisterView,ActiveUserView,ForgetPwdView,ResetView,ModifyPwdView
+from users.views import LoginView,RegisterView,ActiveUserView,ForgetPwdView,ResetView,ModifyPwdView,IndexView
 from organization.views import OrgView
 from rapzhang_online.settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
 
-    url('^$',TemplateView.as_view(template_name='index.html'),name='index'),
+    # url('^$',TemplateView.as_view(template_name='index.html'),name='index'),
+    url(r'^$',IndexView.as_view(),name='index'),
     url('^login/$',LoginView.as_view(), name='login'),
     url('^captcha/',include('captcha.urls')),
     url('^register/$',RegisterView.as_view(),name='register'),

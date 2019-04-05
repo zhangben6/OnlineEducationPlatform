@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic.base import View
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Course,CourseResource
+from .models import Course,CourseResource,Video
 from operation.models import UserFavorite,CourseComments,UserCourse
 from utils.mixin_utils import LoginRequiredMixin
 # Create your views here.
@@ -38,7 +38,8 @@ class CourseListView(View):
         return render(request,'course-list.html',{
             'all_courses':courses,
             'sort':sort,
-            'hot_courses':hot_courses
+            'hot_courses':hot_courses,
+            'current':'course'
         })
 
 
@@ -148,6 +149,45 @@ class AddCommentView(View):
             return HttpResponse(json.dumps({'status':'fail','msg':'添加评论失败'}),content_type='application/json')
 
 
+class VideoPlayView(View):
+    '''
+    视频播放页面
+    '''
+    def get(self,request,video_id):
+        video = Video.objects.get(id=int(video_id))
+        course = video.lesson.course
+
+
+        # 查询用户是否已经关联了该课程（在数据库表中)
+        user_course = UserCourse.objects.filter(user=request.user,course=course)
+        if not user_course:
+            user_course = UserCourse(user=request.user,course=course)
+            user_course.save()
+
+        # 查询相关资料
+        all_resource = CourseResource.objects.filter(course=course)
+
+        # 用户相关课程推荐:
+        # 取出学过这门课的用户们对应的UserCourse对象
+        user_courses = UserCourse.objects.filter(course=course)
+
+        # 取出这些对象中的user_id
+        user_ids = [user_course.user.id for user_course in user_courses]
+        # 取出用户学过的所有课程
+        all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)
+
+        # 取出这些对象中对应的course_id
+        course_ids = [user_course.course.id for user_course in all_user_courses]
+        # 取出用户们学过的其他相关课程
+        relate_courses = Course.objects.filter(id__in=course_ids).order_by('-num_click')[:5]
+
+
+        return render(request,'course-play.html',{
+            'course':course,
+            'course_resources':all_resource,
+            'relate_courses': relate_courses,
+            'video':video
+        })
 
 
 

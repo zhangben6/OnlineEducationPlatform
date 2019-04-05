@@ -78,21 +78,21 @@
 				<div class="nav">
 					<div class="wp">
 						<ul>
-							<li class="{% ifequal current 'index' %}active{% endifequal %}">
+							<li {% if request.path == '/' %}class="active"{% endif %}>
                                 <a href="{% url 'index' %}">首页</a>
                             </li>
 
-							<li class="{% ifequal current 'course' %}active{% endifequal %}">
+							<li {% if request.path|slice:'7' == '/course' %}class="active"{% endif %}>
 								<a href="{% url 'course:course_list' %}">
 									公开课<img class="hot" src="{% static 'images/nav_hot.png' %}">
 								</a>
 							</li>
 
-							<li class="{% ifequal current 'teacher' %}active{% endifequal %}">
-								<a href="{% url 'org:teacher' %}">授课教师</a>
+							<li {% if request.path|slice:'12' == '/org/teacher' %}class="active"{% endif %}>
+								<a href="{% url 'org:teacher' %}">授课讲师</a>
 							</li>
 
-							<li class="{% ifequal current 'org' %}active{% endifequal %}">
+							<li {% if request.path|slice:'9' == '/org/list' %}class="active"{% endif %}>
                                 <a href="{% url 'org:org_list' %}">授课机构</a>
                             </li>
 						</ul>
@@ -105,16 +105,16 @@
 </section>
 <!--crumbs start-->
 
-
+<!-- 面包屑 -->
 {% block custom_bread %}
 <section>
-        <div class="wp">
-            <ul  class="crumbs">
-                <li><a href="index.html">首页</a>></li>
-                <li>xxxx</li>
-            </ul>
-        </div>
-    </section>
+ <div class="wp">
+     <ul class="crumbs">
+         <li><a href="/">首页</a></li>
+         <li></li>
+     </ul>
+ </div>
+</section>
 {% endblock %}
 
 <!-- 页面主体内容区域 -->

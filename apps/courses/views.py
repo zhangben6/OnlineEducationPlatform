@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import View
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 from .models import Course,CourseResource,Video
 from operation.models import UserFavorite,CourseComments,UserCourse
@@ -16,6 +17,12 @@ class CourseListView(View):
 
         # 右边导航栏热门课程推荐
         hot_courses = all_courses.order_by('-num_click')[:3]
+
+        # 首页全局导航栏中的关键词字段(课程搜索)
+        search_keywords = request.GET.get('keywords','')
+        if search_keywords:
+            # 对关键词字段进行数据库like查找匹配
+            all_courses = all_courses.filter(Q(desc__icontains=search_keywords)|Q(name__icontains=search_keywords)|Q(detail__icontains=search_keywords) )
 
         # 按照学习人数和热门课程--- 排序
         sort = request.GET.get('sort', '')

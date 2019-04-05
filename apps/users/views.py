@@ -30,7 +30,8 @@ class CustomBackend(ModelBackend):
 class IndexView(View):
     def get(self,request):
         return render(request,'index.html',{
-            'user':request.user
+            'user':request.user,
+            'current':'index',
         })
 
 class LoginView(View):

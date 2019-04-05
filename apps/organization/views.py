@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse,JsonResponse
+from django.db.models import Q
 # Create your views here.
 
 from .models import CourseOrg,CityDict,Teacher
@@ -24,6 +25,13 @@ class OrgView(View):
         hot_orgs = all_orgs.order_by("-click_num")[:6]
 
         all_citys = CityDict.objects.all()
+
+        # 首页全局导航栏中的关键词字段(课程搜索)
+        search_keywords = request.GET.get('keywords', '')
+        if search_keywords:
+            # 对关键词字段进行数据库like查找匹配
+            all_orgs = all_orgs.filter(
+                Q(desc__icontains=search_keywords) | Q(name__icontains=search_keywords))
 
         # 取出筛选城市 city_id
         city_id = request.GET.get('city', '')
@@ -223,6 +231,13 @@ class AddFavView(View):
 class TeacherView(View):
     def get(self,request):
         all_teachers = Teacher.objects.all()
+
+        # 首页全局导航栏中的关键词字段(课程搜索)
+        search_keywords = request.GET.get('keywords', '')
+        if search_keywords:
+            # 对关键词字段进行数据库like查找匹配
+            all_teachers = all_teachers.filter(
+                Q(work_company__icontains=search_keywords) | Q(name__icontains=search_keywords)|Q(work_position__icontains=search_keywords))
 
         # 根据人气对讲师进行排序
         sort = request.GET.get('sort','')

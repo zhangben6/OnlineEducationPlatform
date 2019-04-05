@@ -281,10 +281,11 @@ class TeacherDetailView(View):
         had_fav_teacher = False
         has_fav_org = False
 
-        if UserFavorite.objects.filter(user=request.user,fav_id=teacher_id,fav_type=3):
-            had_fav_teacher = True
-        if UserFavorite.objects.filter(user=request.user,fav_id=teacher.org.id,fav_type=2):
-            has_fav_org = True
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user,fav_id=teacher_id,fav_type=3):
+                had_fav_teacher = True
+            if UserFavorite.objects.filter(user=request.user,fav_id=teacher.org.id,fav_type=2):
+                has_fav_org = True
 
         # 页面右边的讲师排行榜
         sorted_teachers = Teacher.objects.all().order_by('-click_num')[:3]

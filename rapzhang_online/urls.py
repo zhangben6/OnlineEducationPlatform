@@ -36,13 +36,15 @@ urlpatterns = [
     url('^reset/(?P<reset_code>.*)/$', ResetView.as_view(), name='reset_pwd'),
     url('^modify_pwd/$',ModifyPwdView.as_view(),name='modify_pwd'),
 
-    # 配置上传文件的访问处理函数
-    url(r'^media/(?P<path>.*)$',serve,{'document_root':MEDIA_ROOT}),
-
     # 课程机构url配置 (url分发)
     url('^org/', include('organization.urls',namespace='org')), # Include添加命名空间属性，避免class重名
 
-    # 公开课页面
+    # 公开课页面(url分发)
     url('^course/', include('courses.urls', namespace='course')),  # Include添加命名空间属性，避免class重名
 
+    # 配置上传文件的访问处理函数
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
+
+    # 个人中心相关url配置
+    url(r'^users/',include('users.urls',namespace='users'))
 ]

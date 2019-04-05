@@ -13,7 +13,7 @@ from django.contrib import messages
 from users.models import UserProfile,EmailVerifyRecord
 from .forms import LoginForm,RegisterForm,ForgetForm,ModifyPwdForm
 from utils.email_send import send_register_email
-
+from utils.mixin_utils import LoginRequiredMixin
 
 '''重写自定义判断对应的类'''
 class CustomBackend(ModelBackend):
@@ -182,3 +182,14 @@ def user_login(request):
             return render(request,'index.html')
         else:
             return render(request,'login.html',{'msg':'用户名密码不正确'})
+
+
+# 继承了这个LoginRequiredMixin类之后，前端就必须在登陆状态才能访问这个UserInfoView class
+class UserInfoView(LoginRequiredMixin,View):
+    '''
+    用户个人信息
+    '''
+    def get(self,request):
+        return render(request,'usercenter-info.html',{
+
+        })

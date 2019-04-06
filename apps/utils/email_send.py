@@ -22,8 +22,11 @@ def create_random_str(randomlength=8):
 '''后台发送邮件'''
 def send_register_email(email,send_type='register'):
     email_record = EmailVerifyRecord()
-    # 生成随机的字符串作为code
-    code = create_random_str(16)
+    if send_type == 'update_email':
+        code = create_random_str(4)
+    else:
+        # 生成随机的字符串作为code
+        code = create_random_str(16)
 
     email_record.code = code
     email_record.email = email
@@ -45,6 +48,14 @@ def send_register_email(email,send_type='register'):
     elif send_type == 'forget':
         email_title = '奔哥哥在线动作教育平台密码重置链接'
         email_body = '亲,请点击下面的链接重置账号的密码:http://127.0.0.1:8000/reset/{0}'.format(code)
+        send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
+        if send_status:
+            print('激活邮件已发送至邮箱')
+            pass
+
+    elif send_type == 'update_email':
+        email_title = '奔哥哥在线动作教育平台邮箱修改验证码'
+        email_body = '你的邮箱验证码为:{0}'.format(code)
         send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
         if send_status:
             print('激活邮件已发送至邮箱')

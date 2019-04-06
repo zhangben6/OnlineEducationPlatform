@@ -12,7 +12,7 @@ function sendCodeChangeEmail($btn){
         cache: false,
         type: "get",
         dataType:'json',
-        url:"/users/sendemail_code/",
+        url:"/users/sendEmail_code/",
         data:$('#jsChangeEmailForm').serialize(),
         async: true,
         beforeSend:function(XMLHttpRequest){
@@ -147,7 +147,7 @@ $(function(){
     //保存个人资料
     $('#jsEditUserBtn').on('click', function(){
         var _self = $(this),
-            $jsEditUserForm = $('#jsEditUserForm')
+            $jsEditUserForm = $('#jsEditUserForm');
             verify = verifySubmit(
             [
                 {id: '#nick_name', tips: Dml.Msg.epNickName, require: true}

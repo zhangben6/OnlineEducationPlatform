@@ -37,3 +37,9 @@ class UploadImageForm(forms.ModelForm):
         # 自定义选择需求字段
         fields = ['image']
 
+
+class UserInfoForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['nick_name','gender','birthday','address','mobile']
+

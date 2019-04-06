@@ -24,11 +24,17 @@ class UserProfile(AbstractUser):
     def __str__(self):
         return self.username
 
+    def get_unread_nums(self):
+        '''获取用户未读消息的数量'''
+        from operation.models import UserMessage
+        return UserMessage.objects.filter(user=self.id).count()
+
+
 # 邮箱验证码实体类
 class EmailVerifyRecord(models.Model):
     code = models.CharField(max_length=20,verbose_name=u'验证码字串') # 如果不设置null=Ture的话,默认不允许为空
     email = models.CharField(max_length=50,verbose_name=u'邮箱')
-    send_type = models.CharField(verbose_name=u'验证码类型',choices=(('register',u'注册'),('forget',u'找回密码')),max_length=10)
+    send_type = models.CharField(verbose_name=u'验证码类型',choices=(('register',u'注册'),('forget',u'找回密码'),('update_email',u'修改邮箱')),max_length=15)
     send_time = models.DateTimeField(verbose_name=u'发送时间',default=datetime.now)
 
     class Meta:

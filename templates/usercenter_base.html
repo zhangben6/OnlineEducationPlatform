@@ -34,7 +34,7 @@
                     {% if request.user.is_authenticated %}
                             <div class="personal">
                             <dl class="user fr">
-                                <dd>{{ reqeust.user.username }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                                <dd>{{ request.user.username }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
                                 <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
                             </dl>
                             <div class="userdetail">
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                             <a href="usercenter-message.html">
-                            <div class="msg-num"><span id="MsgNum">0</span></div>
+                            <div class="msg-num"><span id="MsgNum">{{ request.user.get_unread_nums }}</span></div>
                         </a>
 
                         {% else %}
@@ -94,10 +94,10 @@
 	<div class="wp list personal_list">
 	<div class="left">
         <ul>
-            <li class="active2"><a href="usercenter-info.html">个人资料</a></li>
-            <li ><a href="usercenter-mycourse.html">我的课程</a></li>
-            <li ><a href="usercenter-fav-course.html">我的收藏</a></li>
-            <li ><a href="usercenter-message.html" style="position: relative;">我的消息</a></li>
+            <li {% ifequal current 'my_info' %}class="active2"{% endifequal %}><a href="{% url 'users:user_info' %}">个人资料</a></li>
+            <li {% ifequal current 'my_course' %}class="active2"{% endifequal %}><a href="{% url 'users:mycourse' %}">我的课程</a></li>
+            <li {% if request.path|slice:'12' == '/users/myfav'  %}class="active2"{% endif %}><a href="{% url 'users:myfav_org' %}">我的收藏</a></li>
+            <li {% ifequal current 'my_messages' %}class="active2"{% endifequal %}><a href="{% url 'users:myMessage' %}" style="position: relative;">我的消息</a></li>
         </ul>
 	</div>
         {% block right_content %}
@@ -132,7 +132,7 @@
                             <i class="error-tips"></i>
                         </li>
 						<li>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：
-                           <input type="text" id="birth_day" name="birday" value="2009年9月2日" readonly="readonly"/>
+                           <input type="text" id="birth_day" name="birthday" value="2009年9月2日" readonly="readonly"/>
                             <i class="error-tips"></i>
 						</li>
 						<li>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：
@@ -238,8 +238,7 @@
             <div class="button">
                 <input class="changeemai_btn" id="jsChangeEmailBtn" type="button" value="完成"/>
             </div>
-            <input type='hidden' name='csrfmiddlewaretoken' value='DaP7IUKm9FA9nELA9YUlYYWpyIDdCiIP' />
-        <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+            {% csrf_token %}
         </form>
     </div>
 
@@ -361,7 +360,6 @@
                 });
         });
 
-
     $('.jsDeleteFav_org').on('click', function(){
             var _this = $(this),
                 favid = _this.attr('data-favid');
@@ -370,9 +368,9 @@
                     type: "POST",
                     url: "/org/add_fav/",
                     data: {
-                        fav_type: 2,
-                        fav_id: favid,
-                        csrfmiddlewaretoken: '799Y6iPeEDNSGvrTu3noBrO4MBLv6enY'
+                        'fav_type': 2,
+                        'fav_id': favid,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     async: true,
                     success: function(data) {

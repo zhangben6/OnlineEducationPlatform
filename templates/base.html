@@ -28,15 +28,15 @@
                         {% if request.user.is_authenticated %}
                             <div class="personal">
                             <dl class="user fr">
-                                <dd>bobby<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
-                                <dt><img width="20" height="20" src="{% static 'media/image/2016/12/default_big_14.png' %}"/></dt>
+                                <dd>{{ reqeust.user.username }}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                                <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
                             </dl>
                             <div class="userdetail">
                             	<dl>
-	                                <dt><img width="80" height="80" src="{% static 'media/image/2016/12/default_big_14.png' %}"/></dt>
+	                                <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
 	                                <dd>
-	                                    <h2>django</h2>
-	                                    <p>bobby</p>
+	                                    <h2>{{ request.user.username }}</h2>
+	                                    <p>{{ request.user.email }}</p>
 	                                </dd>
                                 </dl>
                                 <div class="btn">
@@ -47,7 +47,7 @@
                         </div>
                             <a href="usercenter-message.html">
                             <div class="msg-num"><span id="MsgNum">0</span></div>
-                        </a>
+                            </a>
 
                         {% else %}
                         <a style="color:white" class="fr registerbtn" href="{% url 'register' %}">注册</a>
@@ -160,7 +160,6 @@
 <script src="{% static 'js/plugins/queryCity/js/public.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/unslider.js' %}" type="text/javascript"></script>
 <script src="{% static 'js/plugins/jquery.scrollLoading.js' %}"  type="text/javascript"></script>
-<script src="{% static 'js/deco-common.js' %}"  type="text/javascript"></script>
 {% block custom_js %}{% endblock %}
 
 </body>

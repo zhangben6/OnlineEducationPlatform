@@ -14,6 +14,8 @@ from users.models import UserProfile,EmailVerifyRecord
 from .forms import LoginForm,RegisterForm,ForgetForm,ModifyPwdForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixin
+from users.forms import UploadImageForm
+
 
 '''重写自定义判断对应的类'''
 class CustomBackend(ModelBackend):
@@ -193,3 +195,50 @@ class UserInfoView(LoginRequiredMixin,View):
         return render(request,'usercenter-info.html',{
 
         })
+
+
+
+# 个人中心页面的相关View，都需要加上LoginRequiredMixin，确保用户为登陆状态
+class UploadImageView(LoginRequiredMixin,View):
+    '''
+    用户修改头像
+    '''
+    # def post(self,request):
+    #     '''第一种方法'''
+    #     image_form = UploadImageForm(request.POST,request.FILES)
+    #     if image_form.is_valid():
+    #         image = image_form.cleaned_data['image']
+    #         request.user.image = image
+    #         request.user.save()
+    #         return HttpResponse(json.dumps({'status':'success'}),content_type='application/json')
+    #     else:
+    #         return HttpResponse(json.dumps({'status': 'fail'}), content_type='application/json')
+
+
+    '''第二种方法'''
+    def post(self,request):
+        image_form = UploadImageForm(request.POST,request.FILES,instance=request.user)
+        # 因为继承的是ModelForm，所以直接拥有了Model的属性和方法，直接可以save()
+        try:
+            image_form.save()
+            return HttpResponse(json.dumps({'status':'success'}),content_type='application/json')
+        except:
+            return HttpResponse(json.dumps({'status': 'fail'}), content_type='application/json')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

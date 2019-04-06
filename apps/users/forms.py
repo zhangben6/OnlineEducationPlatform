@@ -4,6 +4,9 @@ __data__ = '2019/3/28 12:24'
 from django import forms
 from captcha.fields import CaptchaField
 
+from .models import UserProfile
+
+
 class LoginForm(forms.Form):
     username = forms.CharField(required=True,error_messages={'required': '手机号必填项'})
     password = forms.CharField(required=True,
@@ -26,4 +29,11 @@ class ForgetForm(forms.Form):
 class ModifyPwdForm(forms.Form):
     password1 = forms.CharField(required=True)
     password2 = forms.CharField(required=True)
+
+
+class UploadImageForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        # 自定义选择需求字段
+        fields = ['image']
 

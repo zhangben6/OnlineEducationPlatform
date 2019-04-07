@@ -103,6 +103,30 @@ class LoginView(View):
             return render(request,'login.html',{'login_form':login_form})
 
 
+# sql注入攻击网站的示例  ' OR 1=1 #
+class LoginUnsafaView(View):
+    def get(self,request):
+        return render(request, 'login.html', {})
+
+    def post(self,request):
+        user_name = request.POST.get('username', '')
+        pass_word = request.POST.get('password', '')
+
+        import MySQLdb
+        conn = MySQLdb.connect(host='127.0.0.1',user='root',passwd='123456',db='rap_online',charset='utf8')
+        cur = conn.cursor
+        sql_select = "select * from users_userprofile where email='{0}' and password='{1}'".format(user_name,pass_word)
+
+        # 执行sql语句
+        result = cur.execute(sql_select)
+        for row in cur.fetchall():
+            # 查询到用户
+            pass
+        print('zhangben')
+
+
+
+
 class LogOutView(LoginRequiredMixin,View):
     '''用户推出'''
     def get(self,request):

@@ -10,7 +10,8 @@ class CourseAdmin(object):
     list_display = ['course_org','name', 'desc', 'detail', 'degree', 'learn_times','students','fav_nums','image','num_click','add_time']
     search_fields = ['course_org','name', 'desc', 'detail', 'degree','students','fav_nums','image','num_click']
     list_filter = ['course_org','name', 'desc', 'detail', 'degree', 'learn_times','students','fav_nums','image','num_click','add_time']
-
+    ordering = ['-num_click']
+    readonly_fields = ['num_click','fav_nums']
 
 class LessonAdmin(object):
     list_display = ['course', 'name', 'add_time']

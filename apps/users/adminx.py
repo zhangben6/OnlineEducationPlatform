@@ -6,6 +6,7 @@ import xadmin
 # 全局配置必须导入views
 from xadmin import views
 
+
 from .models import EmailVerifyRecord,Banner
 
 # 主题选项设置
@@ -22,6 +23,9 @@ class GlobalSettings(object):
     site_footer = 'Rapzhang的在线教育平台'
     menu_style = 'accordion'
 
+
+
+
 # 新建model的管理类
 class EmailVerifyRecordAdmin(object):
     # 显示字段
@@ -32,6 +36,7 @@ class EmailVerifyRecordAdmin(object):
 
     # 过滤器功能(强大)
     list_filter = ['code','email','send_type','send_time']
+    model_icon = 'fa fa-envelope'
 
 class BannerAdmin(object):
     list_display = ['title','image','url','index','add_time']
@@ -44,5 +49,4 @@ xadmin.site.register(EmailVerifyRecord,EmailVerifyRecordAdmin)
 xadmin.site.register(Banner,BannerAdmin)
 xadmin.site.register(views.BaseAdminView,BaseSetting)
 xadmin.site.register(views.CommAdminView,GlobalSettings)
-
 

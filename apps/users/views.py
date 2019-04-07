@@ -20,7 +20,7 @@ from users.forms import UploadImageForm
 from operation.models import UserCourse,UserFavorite,UserMessage
 from organization.models import CourseOrg,Teacher
 from courses.models import Course
-
+from users.models import Banner
 
 
 '''重写自定义判断对应的类'''
@@ -36,10 +36,23 @@ class CustomBackend(ModelBackend):
 
 
 class IndexView(View):
+    '''Rapzhang在线教育平台首页'''
     def get(self,request):
+        # 取出轮播图
+        all_banners = Banner.objects.all().order_by('index')
+        # 取出course(非广告位课程)
+        courses = Course.objects.filter(is_banner=False)[:6]
+        # 取出广告位课程
+        banner_courses = Course.objects.filter(is_banner=True)[:3]
+        # 取出课程机构
+        course_orgs = CourseOrg.objects.all()[:15]
+
         return render(request,'index.html',{
-            'user':request.user,
             'current':'index',
+            'all_banners':all_banners,
+            'courses':courses,
+            'banner_courses':banner_courses,
+            'course_orgs':course_orgs
         })
 
 class LoginView(View):

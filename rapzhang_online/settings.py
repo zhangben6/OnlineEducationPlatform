@@ -26,7 +26,7 @@ sys.path.insert(0,os.path.join(BASE_DIR,'extra_apps'))
 SECRET_KEY = 'junz%0$divzhpz9*jp_v)jseyj+&2dyt$5g+e)dz&qep7t^y8&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -142,15 +142,19 @@ USE_TZ = False   # 不采用UTC时间
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 # 静态文件的配置
-STATIC_URL = '/mystatic/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,'static'),
+    os.path.join(BASE_DIR,'mystatic'),
 )
 
 
 # 上传资源文件的配置
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+# 自行配置生产环境的static 路径
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
 
 # 发送邮件的用到的参数
 EMAIL_HOST = "smtp.163.com"

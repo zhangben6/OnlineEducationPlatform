@@ -38,6 +38,10 @@ class CustomBackend(ModelBackend):
 class IndexView(View):
     '''Rapzhang在线教育平台首页'''
     def get(self,request):
+
+        # 制造一个异常，出现500页面
+        # print(1/0)
+
         # 取出轮播图
         all_banners = Banner.objects.all().order_by('index')
         # 取出course(非广告位课程)
@@ -405,7 +409,18 @@ class MyMessageView(LoginRequiredMixin,View):
         })
 
 
+# 全局404页面的处理函数
+def page_not_found(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('404.html',{})
+    response.status_code = 404
+    return response
 
-
+# 全局500页面的处理函数
+def page_error(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('500.html',{})
+    response.status_code = 500
+    return response
 
 

@@ -21,7 +21,7 @@ from django.views.static import serve  # 处理静态文件（media)
 
 from users.views import LoginView,RegisterView,ActiveUserView,ForgetPwdView,ResetView,ModifyPwdView,IndexView
 from organization.views import OrgView
-from rapzhang_online.settings import MEDIA_ROOT
+from rapzhang_online.settings import MEDIA_ROOT,STATIC_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
@@ -46,6 +46,14 @@ urlpatterns = [
     # 配置上传文件的访问处理函数
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 
+    # 将debug改为True，django服务器自动不会寻找static目录渲染页面，需要我们自己配置
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT}),
+
     # 个人中心相关url配置
     url(r'^users/',include('users.urls',namespace='users'))
 ]
+
+
+# 配置全局的404,500页面
+handler404 = 'users.views.page_not_found'
+handler500 = 'users.views.page_error'

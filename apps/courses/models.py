@@ -43,6 +43,13 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
+class BannerCourse(Course):
+     class Meta:
+         verbose_name = '轮播课程'
+         verbose_name_plural = verbose_name
+         proxy = True
+
+
 
 # 章节信息实体类
 class Lesson(models.Model):

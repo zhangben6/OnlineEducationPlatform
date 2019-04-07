@@ -60,6 +60,8 @@ class CourseDetailView(View):
             relate_courses = Course.objects.filter(tag=tag)[:1]
         else:
             relate_courses = []   # 为了让模板中的for循环不报错
+
+
         # 每次的点击数 +1
         course.num_click += 1
         course.save()
@@ -89,6 +91,10 @@ class CourseInfoView(LoginRequiredMixin,View):
     '''
     def get(self,request,course_id):
         course = Course.objects.get(id=int(course_id))
+
+        if not UserCourse.objects.filter(user=request.user,course=course):
+            course.students += 1
+            course.save()
 
         # 查询用户是否已经关联了该课程（在数据库表中)
         user_course = UserCourse.objects.filter(user=request.user,course=course)

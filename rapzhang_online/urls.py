@@ -29,6 +29,7 @@ urlpatterns = [
     # url('^$',TemplateView.as_view(template_name='index.html'),name='index'),
     url(r'^$',IndexView.as_view(),name='index'),
     url('^login/$',LoginView.as_view(), name='login'),
+    url('^logout/$',LoginView.as_view(), name='logout'),
     url('^captcha/',include('captcha.urls')),
     url('^register/$',RegisterView.as_view(),name='register'),
     url('^active/(?P<active_code>.*)/$',ActiveUserView.as_view(),name='user_active'),

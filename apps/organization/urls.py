@@ -25,7 +25,7 @@ urlpatterns = [
     # 机构教师介绍
     url(r'^org_teacher/(?P<org_id>\d+)$', OrgTeacherView.as_view(), name='org_teacher'),
 
-    # 机构收藏
+    # 收藏功能的统一调用API
     url(r'^add_fav/$',AddFavView.as_view(),name='add_fav'),
 
     # 讲师列表页面展示

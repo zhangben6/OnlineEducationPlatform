@@ -1,9 +1,9 @@
 import json
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render, redirect,reverse
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic.base import View
@@ -84,6 +84,15 @@ class LoginView(View):
                 return render(request,'login.html',{'msg':'用户密码不正确'})
         else:
             return render(request,'login.html',{'login_form':login_form})
+
+
+class LogOutView(LoginRequiredMixin,View):
+    '''用户推出'''
+    def get(self,request):
+        logout(request)
+        # return redirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index'))  # django中的自带重定向函数
+
 
 class RegisterView(View):
     def get(self,request):
@@ -360,6 +369,12 @@ class MyMessageView(LoginRequiredMixin,View):
     '''我的消息'''
     def get(self,request):
         all_messages = UserMessage.objects.filter(user=request.user.id)
+
+        # 查询用户未读的消息
+        all_unread_messages = UserMessage.objects.filter(user=request.user.id,has_read=False)
+        for unread_message in all_unread_messages:
+            unread_message.has_read = True
+            unread_message.save()
 
         # 对我的消息进行分页
         try:

@@ -22,6 +22,7 @@ class CourseAdmin(object):
     inlines = [LessonInLine]
     refresh_times = [5,10]  # 定时刷新
     style_fields = {'detail':'ueditor'}
+    import_excel = True
 
     def queryset(self):
          qs = super(CourseAdmin,self).queryset()

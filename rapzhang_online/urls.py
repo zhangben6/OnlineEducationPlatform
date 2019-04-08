@@ -17,6 +17,7 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from django.views.generic import TemplateView  # 此方法处理静态文件
 import xadmin
+import DjangoUeditor
 from django.views.static import serve  # 处理静态文件（media)
 
 from users.views import LoginView,RegisterView,ActiveUserView,ForgetPwdView,ResetView,ModifyPwdView,IndexView
@@ -51,7 +52,10 @@ urlpatterns = [
     # url(r'^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT}),
 
     # 个人中心相关url配置
-    url(r'^users/',include('users.urls',namespace='users'))
+    url(r'^users/',include('users.urls',namespace='users')),
+
+    # DjangoUeditor(富文本)
+    url(r'^ueditor/',include('DjangoUeditor.urls' ))
 ]
 
 

@@ -121,8 +121,9 @@
 					</ul>
 				</div>
 				<div class="tab_cont tab_cont1">
-
-					<p>&nbsp; &nbsp;  {{ course.desc }}</p>
+                    {% autoescape off %}
+					{{ course.detail }}
+                    {% endautoescape %}
 
 				</div>
 				<div class="tab_cont tab_cont2" >

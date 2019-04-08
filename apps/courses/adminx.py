@@ -21,6 +21,7 @@ class CourseAdmin(object):
     list_editable = ['degree','desc']
     inlines = [LessonInLine]
     refresh_times = [5,10]  # 定时刷新
+    style_fields = {'detail':'ueditor'}
 
     def queryset(self):
          qs = super(CourseAdmin,self).queryset()

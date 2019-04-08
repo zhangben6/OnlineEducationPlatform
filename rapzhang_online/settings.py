@@ -142,9 +142,9 @@ USE_TZ = False   # 不采用UTC时间
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 # 静态文件的配置
-STATIC_URL = '/static/'
+STATIC_URL = '/mystatic/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR,'mystatic'),
+    os.path.join(BASE_DIR,'static'),
 )
 
 

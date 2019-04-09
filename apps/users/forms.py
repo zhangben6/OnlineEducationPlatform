@@ -27,8 +27,8 @@ class ForgetForm(forms.Form):
 
 
 class ModifyPwdForm(forms.Form):
-    password1 = forms.CharField(required=True)
-    password2 = forms.CharField(required=True)
+    password1 = forms.CharField(required=True,min_length=6)
+    password2 = forms.CharField(required=True,min_length=6)
 
 
 class UploadImageForm(forms.ModelForm):

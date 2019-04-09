@@ -161,6 +161,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 EMAIL_HOST = "smtp.163.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'rapzhang97@163.com'
-EMAIL_HOST_PASSWORD = 'CHURENTOUDI830'  # 启动smtp服务设置的秘钥
+EMAIL_HOST_PASSWORD = 'churentoudi830'  # 启动smtp服务设置的秘钥
 EMAIL_USE_TLS = False
 EMAIL_FROM = "rapzhang97@163.com"

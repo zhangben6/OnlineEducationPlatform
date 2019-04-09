@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fbd32b88-098d-4632-a7d5-e9bd5eeff726" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/static/images/wechat.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/users/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rapzhang_online/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/rapzhang_online/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/register.html" afterDir="false" />
-    </list>
+    <list default="true" id="fbd32b88-098d-4632-a7d5-e9bd5eeff726" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -269,7 +262,7 @@
             <path>
               <item name="rapzhang_online" type="b2602c69:ProjectViewProjectNode" />
               <item name="rapzhang_online" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -376,16 +369,15 @@
       <workItem from="1554689802275" duration="11597000" />
       <workItem from="1554720955085" duration="1117000" />
       <workItem from="1554729255317" duration="5157000" />
-      <workItem from="1554815631132" duration="1507000" />
+      <workItem from="1554815631132" duration="1986000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="254992000" />
+    <option name="totallyTimeSpent" value="255471000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49712643" visible="true" weight="0.16347177" />
       <window_info id="Structure" order="1" sideWeight="0.50287354" side_tool="true" weight="0.21278721" />
